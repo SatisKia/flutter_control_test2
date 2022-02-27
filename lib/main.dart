@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'widget.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -159,83 +161,9 @@ class _MyHomePageState extends State {
   }
 }
 
-class MySelectDialogView {
-  Function(void Function()) setState;
-  BuildContext context; // ダイアログを呼び出したStateのcontext
-  double width; // ダイアログ幅
-  double maxHeight; // ダイアログの高さ上限
-  double itemHeight; // メニューアイテムの高さ
-  Map<String, String> selectMenu; // メニューの内容
-  int selectValue; // 選択中の項目のインデックス
-  Function(int?) onSelectChanged; // コールバック関数
-  MySelectDialogView({required this.setState, required this.context, required this.width, required this.maxHeight, required this.itemHeight, required this.selectMenu, required this.selectValue, required this.onSelectChanged});
-
-  Widget title(int i){
-    String itemString = selectMenu['$i']!;
-    if( itemString.startsWith('assets/') ){
-      return Row(children: [ SizedBox(
-          width: 32,
-          height: 32,
-          child: Image.asset(selectMenu['$i']!, fit: BoxFit.fill)
-      ) ] );
-    }
-    return Text(itemString);
-  }
-
-  Widget build() {
-    var body = <Widget>[];
-    for (int i = 0; i < selectMenu.length; i++) {
-      body.add(Container(
-          height: itemHeight,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.black12))
-          ),
-          child: RadioListTile(
-              title: title(i),
-              value: i,
-              groupValue: selectValue,
-              controlAffinity: ListTileControlAffinity.trailing, // ラベルを左側に
-              toggleable: true, // 選択中の項目をタップしてもonChangedが呼ばれるようにする
-              onChanged: (int? value) {
-                // 選択中の項目がタップされた場合、valueはnullになる
-                if (value != null) {
-                  setState(() {
-                    selectValue = value;
-                  });
-                  onSelectChanged(value);
-                }
-                Navigator.pop(context); // ダイアログを閉じる
-              }
-          )
-      ));
-    }
-
-    double height = itemHeight * selectMenu.length;
-    if (height > maxHeight) {
-      height = maxHeight;
-    }
-
-    return SizedBox(
-        width: width,
-        height: height,
-        child: SingleChildScrollView(
-            controller: ScrollController(
-                initialScrollOffset: itemHeight * selectValue // 選択項目が見えるようにスクロールさせる
-            ),
-            child: Column(children: body)
-        )
-    );
-  }
-}
-
-class MySelect1DialogWidget extends StatefulWidget {
+class MySelect1DialogWidget extends MySelectDialogWidget {
   final _MyHomePageState parent; // 親State
-  final double dialogWidth; // ダイアログ幅
-  final double maxDialogHeight; // ダイアログの高さ上限
-  final double itemHeight; // メニューアイテムの高さ
-  const MySelect1DialogWidget(this.parent, this.dialogWidth, this.maxDialogHeight, this.itemHeight, {Key? key}) : super(key: key);
-
+  const MySelect1DialogWidget(this.parent, double dialogWidth, double maxDialogHeight, double itemHeight, {Key? key}) : super(dialogWidth, maxDialogHeight, itemHeight, key: key);
   @override
   State createState() => MySelect1DialogState();
 }
@@ -244,11 +172,9 @@ class MySelect1DialogState extends State<MySelect1DialogWidget> {
   Widget build(BuildContext context) {
     final _MyHomePageState parent = widget.parent;
     return MySelectDialogView(
+      widget: widget,
       setState: setState,
       context: parent.context, // 親Stateのcontextを渡す
-      width: widget.dialogWidth,
-      maxHeight: widget.maxDialogHeight,
-      itemHeight: widget.itemHeight,
       selectMenu: parent.select1Menu, // 親Stateで宣言された変数
       selectValue: parent.select1Value, // 親Stateで宣言された変数
       onSelectChanged: parent.onSelect1Changed, // 親Stateで宣言された関数
@@ -256,13 +182,9 @@ class MySelect1DialogState extends State<MySelect1DialogWidget> {
   }
 }
 
-class MySelect2DialogWidget extends StatefulWidget {
+class MySelect2DialogWidget extends MySelectDialogWidget {
   final _MyHomePageState parent; // 親State
-  final double dialogWidth; // ダイアログ幅
-  final double maxDialogHeight; // ダイアログの高さ上限
-  final double itemHeight; // メニューアイテムの高さ
-  const MySelect2DialogWidget(this.parent, this.dialogWidth, this.maxDialogHeight, this.itemHeight, {Key? key}) : super(key: key);
-
+  const MySelect2DialogWidget(this.parent, double dialogWidth, double maxDialogHeight, double itemHeight, {Key? key}) : super(dialogWidth, maxDialogHeight, itemHeight, key: key);
   @override
   State createState() => MySelect2DialogState();
 }
@@ -271,11 +193,9 @@ class MySelect2DialogState extends State<MySelect2DialogWidget> {
   Widget build(BuildContext context) {
     final _MyHomePageState parent = widget.parent;
     return MySelectDialogView(
+      widget: widget,
       setState: setState,
       context: parent.context, // 親Stateのcontextを渡す
-      width: widget.dialogWidth,
-      maxHeight: widget.maxDialogHeight,
-      itemHeight: widget.itemHeight,
       selectMenu: parent.select2Menu, // 親Stateで宣言された変数
       selectValue: parent.select2Value, // 親Stateで宣言された変数
       onSelectChanged: parent.onSelect2Changed, // 親Stateで宣言された関数
