@@ -92,6 +92,7 @@ class _MyHomePageState extends State {
                   return AlertDialog(
                       insetPadding: EdgeInsets.all(0),
                       contentPadding: EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                       content: MySelect1DialogWidget(this, contentWidth * 0.9, contentHeight * 0.9, 60.0)
                   );
                 }
@@ -124,6 +125,7 @@ class _MyHomePageState extends State {
                   return AlertDialog(
                       insetPadding: EdgeInsets.all(0),
                       contentPadding: EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                       content: MySelect2DialogWidget(this, contentWidth * 0.9, contentHeight * 0.9, 60.0)
                   );
                 }
